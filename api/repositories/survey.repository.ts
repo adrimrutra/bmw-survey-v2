@@ -1,4 +1,4 @@
-import { Repository } from '../core/repository';
+import { Repository } from '../core/interfaces/repository';
 import { injectable } from 'inversify';
 import { Survey } from '../models/survey';
 

@@ -1,13 +1,9 @@
 import { Request, Response } from 'express';
-import { Controller} from '../core/controller';
 import { injectable, inject } from 'inversify';
-
-
-import { Repository } from '../core/repository';
-import { TYPES } from '../config/repositories';
+import { Controller} from '../core/interfaces/controller';
+import { Repository } from '../core/interfaces/repository';
+import { TYPES } from '../providers/repository.provider';
 import { Survey } from '../models/survey';
-
-
 import 'reflect-metadata';
 
 

@@ -1,10 +1,10 @@
 import { Route } from './models/route';
 import { Container, interfaces } from 'inversify';
-import { getRoutes } from '../config/route';
-import { Controller} from './controller';
+import { RouteProvider } from '../providers/route.provider';
+import { Controller} from './interfaces/controller';
 import { Request, Response } from 'express';
 import * as express from 'express';
-import { bindRepositories } from '../config/repositories';
+import { RepositoryProvider } from '../providers/repository.provider';
 
 
 export class Router {
@@ -14,7 +14,7 @@ export class Router {
 
 
     constructor() {
-        this.routes = getRoutes();
+        this.routes = RouteProvider.getRoutes();
 
         this.container = new Container();
         this.binding();
@@ -27,7 +27,7 @@ export class Router {
             this.container.bind<Controller>(element.controller).to(element.controller);
         });
 
-        bindRepositories(this.container);
+        RepositoryProvider.bindRepositories(this.container);
     }
 
     public route(): any {
