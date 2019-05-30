@@ -2,6 +2,7 @@ import * as express from 'express';
 import * as bodyParser from 'body-parser';
 import { Router } from './core/router';
 
+const port = process.env.PORT || '4000';
 
 class App {
     public app: express.Application;
@@ -15,6 +16,13 @@ class App {
 
     private initializeMiddlewares() {
          this.app.use(bodyParser.json());
+
+      //    this.app.use(function(req, res, next) {
+      //     res.header("Access-Control-Allow-Origin", "*");
+      //     res.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE");
+
+      //     next();
+      // });
          this.app.use('/api', this.router.route());
     }
 
@@ -22,10 +30,10 @@ class App {
         return this.app;
       }
 
-
+    
     public listen() {
-        this.app.listen(5000, () => {
-          console.log('App listening on the port 5000');
+        this.app.listen(port, () => {
+          console.log('App listening on the port '+ port);
         });
     }
 }

@@ -5,19 +5,25 @@ import { Controller} from './interfaces/controller';
 import { Request, Response } from 'express';
 import * as express from 'express';
 import { RepositoryProvider } from '../providers/repository.provider';
+import { DbConnection } from './db.connection';
+
 
 
 export class Router {
     private routes: Route[];
     private container: Container;
     private controllers = new Array();
-
+    private db = new DbConnection();
 
     constructor() {
         this.routes = RouteProvider.getRoutes();
 
         this.container = new Container();
         this.binding();
+    }
+
+    public cleanup() {
+        this.db.disconnect();
     }
 
     private binding() {
@@ -33,7 +39,9 @@ export class Router {
     public route(): any {
         const expressRouter = express.Router();
         (async () => {
-
+            //await 
+            this.db.connect();
+         
 
             this.routes.forEach(element => {
 

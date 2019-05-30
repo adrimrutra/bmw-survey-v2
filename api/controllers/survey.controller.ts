@@ -18,7 +18,7 @@ import 'reflect-metadata';
         return await this.repository.Get();
     }
     post(req: Request): Promise<any> {
-        //throw new AppError(404, 'Not found.');
+        throw console.error();
     }
 
     //@secure()
@@ -31,6 +31,6 @@ import 'reflect-metadata';
         return await this.repository.Update(req.body.data._id, survey);
     }
     delete(id: any, req: Request): Promise<any> {
-        //throw new AppError(404, 'Not found.');
+        throw console.error(404, 'Not found.');
     }
 }
