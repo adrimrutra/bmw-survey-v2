@@ -1,0 +1,92 @@
+<h1 class="templatemo-header">Survey</h1>
+<div class="row">
+        <div class="col-sm-12 col-md-12" >
+
+
+            <div id="myAlert" class="alert alert-success" role="alert">
+                <h4 class="alert-heading">Thank you for your interest !</h4>
+                <p>{{message}}</p>
+                <hr>
+            </div>
+
+            <form role="form" data-toggle="validator" [formGroup]="surveyForm">
+
+                <div class="form-group">
+                  <label for="age" class="control-label">Question 1: Age</label>
+                  <input type="number" (keyup)="checkAgeGender()" formControlName="age" required min="0" max="100" id="age" class="form-control" placeholder="Age" />
+                   <div class="help-block with-errors"></div>
+                </div>
+
+                <div class="form-group">
+                    <label for="gender" >Question 2: Gender</label>
+                    <select class="form-control" required id="gender" formControlName="gender" 
+                    (change)="checkAgeGender()">
+                      <option *ngFor="let item of answers.gender" [value]="item.choice">{{item.choice}}</option>
+                    </select>
+                </div>
+  
+                <div [hidden]="!q_three"> 
+                        <div class="form-group">
+                            <label for="license">Question 3: Do you own a car driving license?</label>
+                            <select class="form-control" id="license" required formControlName="license" (change)="isLicense()">
+                              <option *ngFor="let item of answers.license" [value]="item.choice">{{item.choice}}</option>
+                            </select>
+                        </div>
+               
+                        
+                        <div class="form-group" [hidden]="!young_driver" >
+                            <label for="first_car">Question 4 : Is this your first car?</label>
+                            <select class="form-control" id="first_car" required formControlName="first_car" (change)="isFirstCar()">
+                              <option *ngFor="let item of answers.yes_no" [value]="item.choice" >{{item.choice}}</option>
+                            </select>
+                        </div>
+
+                         <div [hidden]="!q_five"> 
+            
+                               <div class="form-group">
+                                  <label for="drivetrain">Question {{five}} : Which drivetrain do you prefer?</label>
+                                  <select class="form-control" id="drivetrain" required formControlName="drivetrain">
+                                    <option *ngFor="let item of answers.drivetrain" [value]="item.choice">{{item.choice}}</option>
+                                  </select>
+                              </div>
+
+                              <div class="form-group">
+                                  <label for="drifting">Question {{six}} : Do you care about drifting?</label>
+                                  <select class="form-control" id="drifting" required formControlName="drifting">
+                                    <option *ngFor="let item of answers.yes_no" [value]="item.choice">{{item.choice}}</option>
+                                  </select>
+                              </div>
+                        
+                             <div class="form-group">
+                                <label for="how_many" class="control-label">Question {{seven}} : How many BMWs did you drive?</label>
+                                <input type="number" (keyup)="isDriven()" required formControlName="how_many" id="how_many" class="form-control" placeholder="How many BMWs did you drive?" />
+                                <div class="help-block with-errors"></div>
+                             </div>
+  
+                              <div formArrayName="carmodels">
+                                <div class="form-group" *ngFor="let item of carmodels.controls; let i = index" >
+                                    <label [attr.for]="i"  class="control-label">Which BMW did you drive?</label>
+                                      <input type="text" [formControlName]="i"
+                                      id="i"
+                                      class="form-control"  
+                                      placeholder="M320i" 
+                                      pattern="(^[M]\d{3}[d|i])$|(^[X|Z]\d{1}$)"
+                                      required />
+                                      <div class="help-block with-errors"></div>
+                                </div>
+                                
+                              </div>
+
+                              <div class="form-group">
+                                <button type="submit" (click)="addSurvey()" class="btn btn-default">Submit</button>
+                              </div>
+                          </div>          
+                  </div> 
+              </form>
+        </div>
+    
+      <div class="clearfix"></div>
+</div>
+
+
+   

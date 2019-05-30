@@ -1,0 +1,42 @@
+<div class="templatemo-logo visible-xs-block">
+		<div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 black-bg logo-left-container">
+			<h1 class="logo-left">Black</h1>
+		</div>
+		<div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 white-bg logo-right-container">
+			<h1 class="logo-right">White</h1>
+    </div>			
+</div>
+
+<div class="templatemo-container">
+
+
+        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 black-bg left-container">
+            <h1 class="logo-left hidden-xs margin-bottom-60">Black</h1>	
+            <div class="tm-left-inner-container">
+              <ul class="nav nav-stacked templatemo-nav">
+                <li><a [routerLink]="'/home'"><i class="fa fa-home fa-medium"></i>Homepage</a></li>
+                <li><a [routerLink]="'/survey'" ><i class="fa fa-envelope-o fa-medium"></i>Survey</a></li>
+                <li><a [routerLink]="'/staff'" ><i class="fa fa-envelope-o fa-medium"></i>Staff</a></li>
+              </ul>
+            </div>
+        </div> <!-- left section -->
+
+        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 white-bg right-container">
+                <h1 class="logo-right hidden-xs margin-bottom-60">White</h1>
+
+                <div class="tm-right-inner-container">
+
+                <router-outlet></router-outlet>
+
+                <footer>
+                  <p class="col-lg-6 col-md-6 col-sm-12 col-xs-12 templatemo-copyright">Copyright &copy; 2019</p>
+                  <p class="col-lg-6 col-md-6 col-sm-12 col-xs-12 templatemo-social">
+                  </p>
+                </footer>
+
+               </div>	
+			
+			
+			
+		    </div> <!-- right section -->
+	</div>
