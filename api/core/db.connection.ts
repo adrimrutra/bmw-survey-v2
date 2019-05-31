@@ -19,27 +19,27 @@ export class DbConnection {
     private timeoutInstance = null;
 
 
-    //async
+    // async
     connect() {
         try {
 
 
             this.mongoose.Promise = global.Promise;
             this.mongoose.connect(this.db_url, { useNewUrlParser: true }).then(
-              () => {console.log('Database is connected') },
-              err => { console.log('Can not connect to the database'+ err)}
+              () => {console.log('Database is connected'); },
+              (err) => { console.log('Can not connect to the database' + err); }
             );
 
           // this.instance = await mongoose.connect(this.db_url, { useNewUrlParser: true });
          //  this.isConnected = true;
 
- 
-            if(this.timeoutInstance != null){
+
+            if (this.timeoutInstance != null) {
                 clearTimeout(this.timeoutInstance);
             }
         } catch (err) {
-            console.log('Can not connect to the database'+ err)
-            this.timeoutInstance = setTimeout(()=>{
+            console.log('Can not connect to the database' + err);
+            this.timeoutInstance = setTimeout(() => {
                 this.connect();
             }, this.ReconnectTimeout);
         }

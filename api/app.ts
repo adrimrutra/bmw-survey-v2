@@ -30,10 +30,10 @@ class App {
         return this.app;
       }
 
-    
+
     public listen() {
         this.app.listen(port, () => {
-          console.log('App listening on the port '+ port);
+          console.log('App listening on the port ' + port);
         });
     }
 }

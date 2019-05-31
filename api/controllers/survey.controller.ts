@@ -17,14 +17,13 @@ import 'reflect-metadata';
     async get(req: Request) {
         return await this.repository.Get();
     }
-    post(req: Request): Promise<any> {
-        throw console.error();
+    async post(req: Request): Promise<any> {
+        return await this.repository.Add(req.body.data);
     }
 
-    //@secure()
     async put(id: any, req: Request) {
         if (!req.body.data || !req.body.data._id) {
-            //throw new AppError(400, 'Bad Request');
+            throw console.error(400, 'Bad Request');
         }
 
         const survey: Survey = req.body.data;
