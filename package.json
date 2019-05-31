@@ -47,7 +47,7 @@
     "inversify": "^5.0.1",
     "jquery": "^3.4.1",
     "mongoose": "^5.4.15",
-    "ng2-charts": "^2.2.3",
+    "ng2-charts": "^2.2.2",
     "rxjs": "^6.5.2",
     "ts-node-dev": "^1.0.0-pre.39",
     "typegoose": "^5.6.0",
