@@ -18,7 +18,7 @@ import 'reflect-metadata';
         return await this.repository.Get();
     }
     async post(req: Request): Promise<any> {
-        return await this.repository.Add(req.body.data);
+        return await this.repository.Add(req.body);
     }
 
     async put(id: any, req: Request) {
@@ -29,7 +29,7 @@ import 'reflect-metadata';
         const survey: Survey = req.body.data;
         return await this.repository.Update(req.body.data._id, survey);
     }
-    delete(id: any, req: Request): Promise<any> {
+    async delete(id: any, req: Request): Promise<any> {
         throw console.error(404, 'Not found.');
     }
 }

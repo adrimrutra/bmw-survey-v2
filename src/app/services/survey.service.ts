@@ -16,7 +16,7 @@ export class SurveyService {
   constructor(private http: HttpClient) {}
 
   addSurvey(survey: Survey): Observable<Survey>  {
-        return this.http.post<Survey>(apiUrl + '/add', survey, httpOptions).pipe(
+        return this.http.post<Survey>(apiUrl, survey, httpOptions).pipe(
           tap((data: Survey) => console.log(data)),
           catchError(this.handleError<Survey>('addSurvey'))
         );

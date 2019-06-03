@@ -13,7 +13,8 @@ export class SurveyRepository implements Repository<Survey> {
         return surveys;
     }
     async Add(entity: Survey) {
-        throw new Error('Method not implemented.');
+        this.survey = new Survey().getModelForClass(Survey);
+        return await new this.survey(entity).save();
     }
     async Update(id: any, entity: Survey) {
         const Model = new Survey().getModelForClass(Survey);
