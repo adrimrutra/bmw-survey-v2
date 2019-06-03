@@ -39,9 +39,7 @@ export class Router {
     public route(): any {
         const expressRouter = express.Router();
         (async () => {
-            //await 
-            this.db.connect();
-         
+            await  this.db.connect();
 
             this.routes.forEach(element => {
 
@@ -84,7 +82,7 @@ export class Router {
                 if (response) {
                     res.status(200).json(response);
                 } else {
-                    res.sendStatus(204);
+                    res.sendStatus(2010);
                 }
 
             } catch (err) {

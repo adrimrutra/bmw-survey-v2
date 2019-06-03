@@ -20,18 +20,18 @@ export class DbConnection {
 
 
     // async
-    connect() {
+    async connect() {
         try {
 
 
-            this.mongoose.Promise = global.Promise;
-            this.mongoose.connect(this.db_url, { useNewUrlParser: true }).then(
-              () => {console.log('Database is connected'); },
-              (err) => { console.log('Can not connect to the database' + err); }
-            );
+            // this.mongoose.Promise = global.Promise;
+            // this.mongoose.connect(this.db_url, { useNewUrlParser: true }).then(
+            //   () => {console.log('Database is connected'); },
+            //   (err) => { console.log('Can not connect to the database' + err); }
+            // );
 
-          // this.instance = await mongoose.connect(this.db_url, { useNewUrlParser: true });
-         //  this.isConnected = true;
+           this.instance = await mongoose.connect(this.db_url, { useNewUrlParser: true });
+           this.isConnected = true;
 
 
             if (this.timeoutInstance != null) {
