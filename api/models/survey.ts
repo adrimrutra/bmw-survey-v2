@@ -3,36 +3,30 @@ import { prop, Typegoose, ModelType, InstanceType, Ref, arrayProp, plugin, pre }
 
 export class Survey extends Typegoose {
 
-   // @prop({ required: true, min: 0, max: 100 })
-    @prop()
+    @prop({ required: true, min: 0, max: 100 })
     age: Number;
 
-  //  @prop({ required: true })
-    @prop()
-    gender: string;
+    @prop({ required: true })
+    gender: String;
 
-   // @prop({ required: true })
-    @prop()
-    license: string;
+    @prop({ required: false })
+    license: String;
 
-   // @prop({ required: true })
-    @prop()
-    first_car: string;
+    @prop({ required: true })
 
-   // @prop({ required: true })
-    @prop()
-    drivetrain: string;
+    first_car: String;
 
-   // @prop({ required: true })
-    @prop()
-    drifting: string;
+    @prop({ required: false })
+    drivetrain: String;
 
-   // @prop({ required: true })
-    @prop()
+    @prop({ required: false })
+    drifting: String;
+
+    @prop({ required: false })
     how_many: Number;
 
-   // @prop({ match: '(^[M]\d{3}[d|i])$|(^[X|Z]\d{1}$)' })
-    @prop()
-    carmodels: [string];
+    // @prop({ required: false, match: '(^[M]\d{3}[d|i])$|(^[X|Z]\d{1}$)' })
+    @arrayProp({ items: String })
+    carmodels: String [];
 }
 

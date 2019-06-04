@@ -1,9 +1,9 @@
-import { Repository } from '../core/interfaces/repository';
+import { IRepository } from '../core/interfaces/i.repository';
 import { injectable } from 'inversify';
 import { Survey } from '../models/survey';
 
 @injectable()
-export class SurveyRepository implements Repository<Survey> {
+export class SurveyRepository implements IRepository<Survey> {
     private survey;
     constructor() {
         this.survey = new Survey().getModelForClass(Survey);

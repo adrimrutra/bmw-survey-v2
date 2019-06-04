@@ -1,6 +1,9 @@
 import * as express from 'express';
+import { NextFunction, Request, Response } from 'express';
 import * as bodyParser from 'body-parser';
 import { Router } from './core/router';
+import errorMiddleware from './middleware/error.middleware';
+import loggerMiddleware from './providers/logger.provider';
 
 const port = process.env.PORT || '4000';
 
@@ -24,6 +27,15 @@ class App {
           next();
          });
          this.app.use('/api', this.router.route());
+         this.app.use((request, response, next) => {
+          console.log(`${request.method} ${request.path}`);
+          console.log(`${response}`);
+          next();
+        });
+    }
+
+    private initializeErrorHandling() {
+      this.app.use(errorMiddleware);
     }
 
     public getServer() {
