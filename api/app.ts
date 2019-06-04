@@ -3,13 +3,19 @@ import { NextFunction, Request, Response } from 'express';
 import * as bodyParser from 'body-parser';
 import { Router } from './core/router';
 import errorMiddleware from './middleware/error.middleware';
-import loggerMiddleware from './providers/logger.provider';
+import LoggerProvider from './providers/logger.provider';
+import * as morgan from 'morgan';
+import WinstonLogger from './config/winston.logger';
+import * as winston from 'winston';
+import { levels } from 'logform';
 
 const port = process.env.PORT || '4000';
 
 class App {
     public app: express.Application;
     public router = new Router();
+  //  public winstonLogger = new WinstonLogger();
+
 
 
     constructor() {
@@ -26,12 +32,30 @@ class App {
           res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, x-access-token, Content-Type, Accept');
           next();
          });
-         this.app.use('/api', this.router.route());
-         this.app.use((request, response, next) => {
-          console.log(`${request.method} ${request.path}`);
-          console.log(`${response}`);
-          next();
+         const logger = winston.createLogger({
+          format: winston.format.json(),
+          defaultMeta: { service: 'user-service' },
+          transports: [
+            //
+            // - Write to all logs with level `info` and below to `combined.log` 
+            // - Write all logs error (and below) to `error.log`.
+            //
+            new winston.transports.File({ filename: 'error.log', level: 'error' }),
+            new winston.transports.File({ filename: 'combined.log',  }),
+            new winston.transports.Console({ level: 'info'})
+          ]
         });
+
+        // logger.info('hello logger');
+
+       // this.app.use(LoggerProvider.loggerMiddleware);
+       // this.app.use(morgan('combined'));
+       // this.app.use(morgan('combined', { stream: this.winstonLogger.logger.stream }));
+        this.app.use(morgan('combined', { stream: logger }));
+        this.app.use('/api', this.router.route());
+
+        logger.info('combined');
+
     }
 
     private initializeErrorHandling() {
