@@ -3,7 +3,7 @@ import { NextFunction, Request, Response } from 'express';
 import * as bodyParser from 'body-parser';
 import { Router } from './core/router';
 import errorMiddleware from './middleware/error.middleware';
-import LoggerProvider from './middleware/logger.provider';
+import loggerMiddleware from './middleware/logger.provider';
 
 
 import * as winston from 'winston';
@@ -16,7 +16,7 @@ const port = process.env.PORT || '4000';
 class App {
     public app: express.Application;
     public router = new Router();
-    public loggerProvider = new LoggerProvider();
+   // public loggerProvider = new LoggerProvider();
 
 
 
@@ -26,6 +26,7 @@ class App {
     }
 
     private initializeMiddlewares() {
+        this.app.use(loggerMiddleware);
         this.app.use(bodyParser.json());
 
         this.app.use(function(req, res, next) {
@@ -47,14 +48,9 @@ class App {
         //this.loggerMiddleware.logger.info('Hello, Winston!');
         //this.loggerMiddleware.logger.error('Hello, Winston!');
 
-        this.app.use(this.loggerProvider.loggerMiddleware);
+
 
         this.app.use('/api', this.router.route());
-
-
-
-
-
 
     }
 
@@ -70,7 +66,6 @@ class App {
     public listen() {
         this.app.listen(port, () => {
           console.log('App listening on the port ' + port);
-          //this.winstonLogger.logger.info('App listening on the port ' + port);
         });
     }
 }
