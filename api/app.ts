@@ -3,7 +3,8 @@ import { NextFunction, Request, Response } from 'express';
 import * as bodyParser from 'body-parser';
 import { Router } from './core/router';
 import errorMiddleware from './middleware/error.middleware';
-import loggerMiddleware from './middleware/logger.provider';
+import { LoggerProvider } from './providers/logger.provider';
+
 
 
 import * as winston from 'winston';
@@ -16,9 +17,6 @@ const port = process.env.PORT || '4000';
 class App {
     public app: express.Application;
     public router = new Router();
-   // public loggerProvider = new LoggerProvider();
-
-
 
     constructor() {
         this.app = express();
@@ -26,7 +24,16 @@ class App {
     }
 
     private initializeMiddlewares() {
-        this.app.use(loggerMiddleware);
+        this.app.use(function(req, res, next) {
+          LoggerProvider.logger.info(`${req.method} ${req.path}`);
+          LoggerProvider.logger.error(`${req.method} ${req.path}`);
+          LoggerProvider.logger.warn(`${req.method} ${req.path}`);
+          LoggerProvider.logger.verbose(`${req.method} ${req.path}`);
+          LoggerProvider.logger.silly(`${req.method} ${req.path}`);
+
+
+          next();
+        });
         this.app.use(bodyParser.json());
 
         this.app.use(function(req, res, next) {
@@ -65,7 +72,8 @@ class App {
 
     public listen() {
         this.app.listen(port, () => {
-          console.log('App listening on the port ' + port);
+          LoggerProvider.logger.info('App listening on the port ' + port);
+         // console.log('App listening on the port ' + port);
         });
     }
 }
