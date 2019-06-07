@@ -24,19 +24,17 @@ class App {
     }
 
     private initializeMiddlewares() {
-        this.app.use(function(req, res, next) {
+        this.app.use((req, res, next) => {
           LoggerProvider.logger.info(`${req.method} ${req.path}`);
           LoggerProvider.logger.error(`${req.method} ${req.path}`);
           LoggerProvider.logger.warn(`${req.method} ${req.path}`);
           LoggerProvider.logger.verbose(`${req.method} ${req.path}`);
           LoggerProvider.logger.silly(`${req.method} ${req.path}`);
-
-
           next();
         });
         this.app.use(bodyParser.json());
 
-        this.app.use(function(req, res, next) {
+        this.app.use((req, res, next) => {
           res.header('Access-Control-Allow-Origin', '*');
           res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
           res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, x-access-token, Content-Type, Accept');
@@ -44,18 +42,6 @@ class App {
         });
 
        // this.app.use(LoggerProvider.loggerMiddleware);
-
-
-        // Log a message
-        // this.loggerMiddleware.logger.log({
-        //   message: 'Hello, Winston!',
-        //   level: 'info'
-        // });
-        // Log a message
-        //this.loggerMiddleware.logger.info('Hello, Winston!');
-        //this.loggerMiddleware.logger.error('Hello, Winston!');
-
-
 
         this.app.use('/api', this.router.route());
 

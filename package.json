@@ -55,6 +55,7 @@
     "ts-node-dev": "^1.0.0-pre.39",
     "typegoose": "^5.6.0",
     "winston": "^3.2.1",
+    "winston-daily-rotate-file": "^3.9.0",
     "zone.js": "^0.8.29"
   },
   "devDependencies": {
