@@ -18,8 +18,6 @@ export class DbConnection {
 
     private timeoutInstance = null;
 
-
-    // async
     async connect() {
         try {
 

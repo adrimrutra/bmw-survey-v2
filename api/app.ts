@@ -45,6 +45,8 @@ class App {
 
         this.app.use('/api', this.router.route());
 
+        this.initializeErrorHandling();
+
     }
 
     private initializeErrorHandling() {
