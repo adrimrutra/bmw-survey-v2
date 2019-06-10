@@ -11,11 +11,17 @@ import NotImplementedException from '../exceptions/NotImplementedException';
 @injectable()
  export class RegistrationController implements Controller, Post {
 
-    constructor(@inject(TYPES.Survey) private repository: Repository<User>) {
+    constructor(@inject(TYPES.User) private repository: Repository<User>) {
     }
 
     async post(req: Request, next: NextFunction): Promise<any> {
-        if (this.repository as Add<User>){
+        if (this.repository as Add<User>) {
+            // req.checkBody('name', 'Name is required').notEmpty();
+            // req.checkBody('email', 'Email is required').notEmpty();
+            // req.checkBody('email', 'Please enter a valid email').isEmail();
+            // req.checkBody('password', 'Password is required').notEmpty();
+            // let errors = req.validationErrors();
+
             await (this.repository as Add<User>).Add(req.body).then((res) => {
                 return res;
             }).catch((err: any) => {

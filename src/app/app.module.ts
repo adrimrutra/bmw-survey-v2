@@ -9,6 +9,7 @@ import { AppComponent } from './app.component';
 import { SurveyComponent } from './survey/survey.component';
 import { HomeComponent } from './home/home.component';
 import { StaffComponent } from './staff/staff.component';
+import { RegistrationComponent } from './registration/registration.component';
 
 
 import { AppRoutingModule } from './/app-routing.module';
@@ -23,7 +24,8 @@ import { SurveyService } from './services/survey.service';
     AppComponent,
     SurveyComponent,
     HomeComponent,
-    StaffComponent
+    StaffComponent,
+    RegistrationComponent
   ],
   imports: [
     BrowserModule,

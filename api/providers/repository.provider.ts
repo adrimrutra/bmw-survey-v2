@@ -14,6 +14,6 @@ export const TYPES = {
 export class RepositoryProvider {
     public static bindRepositories(container: Container) {
         container.bind<Repository<Survey>>(TYPES.Survey).to(SurveyRepository);
-        container.bind<Repository<Survey>>(TYPES.User).to(UserRepository);
+        container.bind<Repository<User>>(TYPES.User).to(UserRepository);
     }
 }

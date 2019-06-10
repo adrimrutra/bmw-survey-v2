@@ -1,13 +1,20 @@
 import * as express from 'express';
+import * as expressValidator from 'express-validator';
+
 import { NextFunction, Request, Response } from 'express';
 import * as bodyParser from 'body-parser';
 import { Router } from './core/router';
 import errorMiddleware from './middleware/error.middleware';
 import { LoggerProvider } from './providers/logger.provider';
-
-
-
 import * as winston from 'winston';
+
+
+
+//import cookeParser from 'cookie-parser';
+//import session from 'express-session';
+//import passport from 'passport';
+//const LocalStrategy = require('passport-local').Strategy;
+
 
 
 
@@ -33,6 +40,12 @@ class App {
           next();
         });
         this.app.use(bodyParser.json());
+        //this.app.use(cookeParser());
+
+      //  this.app.use(passport.initialize());
+      //  this.app.use(passport.session());
+
+        this.app.use(expressValidator());
 
         this.app.use((req, res, next) => {
           res.header('Access-Control-Allow-Origin', '*');

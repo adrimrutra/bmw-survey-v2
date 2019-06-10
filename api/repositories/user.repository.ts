@@ -2,7 +2,7 @@ import { injectable } from 'inversify';
 import * as bcrypt from 'bcrypt';
 import * as jwt from 'jsonwebtoken';
 import { Repository, Add } from '../core/interfaces/repository';
-import { User } from '../models/user';
+import { User, createUser } from '../models/user';
 import UserAlreadyExistsException from '../exceptions/UserAlreadyExistsException';
 import TokenData from '../core/interfaces/token.data';
 import DataStoredInToken from '../core/interfaces/data.stored.in.token';
@@ -20,18 +20,21 @@ export class UserRepository implements Repository<User>, Add<User> {
         if (await this.user.findOne({ email: entity.email })) {
             throw new UserAlreadyExistsException(entity.email.toString());
         }
-        const hashedPassword = await bcrypt.hash(entity.password, 10);
-        const user = await this.user.create({
-            ...entity,
-            password: hashedPassword,
-          });
-          user.password = undefined;
-          const tokenData = this.createToken(user);
-          const cookie = this.createCookie(tokenData);
-       // let response = new Response();
-       // response.headers.set('Set-Cookie', cookie);
-        //response.body(user);
-        return// await //response.send(user);
+
+        const _user = await this.user({
+          name: entity.name,
+          email: entity.email,
+          password: entity.password
+        });
+
+        await createUser(_user, function(err, user) {
+            if ( err ) {
+              throw new UserAlreadyExistsException(err);
+            } else {
+              return user;
+            }
+        });
+
     }
 
     public createCookie(tokenData: TokenData) {
