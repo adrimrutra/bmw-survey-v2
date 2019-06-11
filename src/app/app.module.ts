@@ -17,6 +17,7 @@ import { AngularFontAwesomeModule } from 'angular-font-awesome';
 
 /*************************Services******************************/
 import { SurveyService } from './services/survey.service';
+import { AuthenticationComponent } from './authentication/authentication.component';
 
 
 @NgModule({
@@ -25,7 +26,8 @@ import { SurveyService } from './services/survey.service';
     SurveyComponent,
     HomeComponent,
     StaffComponent,
-    RegistrationComponent
+    RegistrationComponent,
+    AuthenticationComponent
   ],
   imports: [
     BrowserModule,

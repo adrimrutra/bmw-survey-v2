@@ -25,7 +25,7 @@ import NotImplementedException from '../exceptions/NotImplementedException';
             await (this.repository as Add<User>).Add(req.body).then((res) => {
                 return res;
             }).catch((err: any) => {
-                next(new BadRequestException());
+                next(err);
             });
         } else {
             next(new NotImplementedException());

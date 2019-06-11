@@ -21,7 +21,7 @@ export class RegistrationComponent implements OnInit {
       name:  ['', [Validators.required]],
       email: ['', [Validators.required]],
       password: ['', [Validators.required]],
-      cfm_pwd: ['', [Validators.required]],
+      cfm_pwd: ['', [Validators.required]]
     });
   }
 
@@ -29,8 +29,9 @@ export class RegistrationComponent implements OnInit {
     this.regestrationService.addUser(this.userRegistrationForm.value)
     .subscribe(res => {
         this.userRegistrationForm.reset();
+        console.log(res);
       }, (err) => {
         console.log(err);
-      });
+    });
   }
 }

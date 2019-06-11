@@ -28,9 +28,8 @@ export class DbConnection {
             //   (err) => { console.log('Can not connect to the database' + err); }
             // );
 
-           this.instance = await mongoose.connect(this.db_url, { useNewUrlParser: true });
+           this.instance = await mongoose.connect(this.db_url, { useNewUrlParser: true , useCreateIndex: true});
            this.isConnected = true;
-
 
             if (this.timeoutInstance != null) {
                 clearTimeout(this.timeoutInstance);

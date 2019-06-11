@@ -2,11 +2,12 @@ import { injectable } from 'inversify';
 import * as bcrypt from 'bcrypt';
 import * as jwt from 'jsonwebtoken';
 import { Repository, Add } from '../core/interfaces/repository';
-import { User, createUser } from '../models/user';
+import { User} from '../models/user';
 import UserAlreadyExistsException from '../exceptions/UserAlreadyExistsException';
 import TokenData from '../core/interfaces/token.data';
 import DataStoredInToken from '../core/interfaces/data.stored.in.token';
 import {Response} from 'express';
+
 
 
 @injectable()
@@ -27,7 +28,7 @@ export class UserRepository implements Repository<User>, Add<User> {
           password: entity.password
         });
 
-        await createUser(_user, function(err, user) {
+        await this.createUser(_user, function(err, user) {
             if ( err ) {
               throw new UserAlreadyExistsException(err);
             } else {
@@ -37,19 +38,34 @@ export class UserRepository implements Repository<User>, Add<User> {
 
     }
 
+    private createUser (newUser, callback) {
+
+      bcrypt.genSalt(10, function(err, salt) {
+        bcrypt.hash(newUser.password, salt, function(err, hash) {
+            newUser.password = hash;
+            newUser.save(callback);
+        });
+      });
+
+    }
+
+
+
+
+
     public createCookie(tokenData: TokenData) {
         return `Authorization=${tokenData.token}; HttpOnly; Max-Age=${tokenData.expiresIn}`;
     }
 
-    private createToken(user: User): TokenData {
-        const expiresIn = 60 * 60; // an hour
-        const secret = process.env.JWT_SECRET;
-        const dataStoredInToken: DataStoredInToken = {
-          _id: user._id,
-        };
-        return {
-          expiresIn,
-          token: jwt.sign(dataStoredInToken, secret, { expiresIn }),
-        };
-      }
+    // private createToken(user: User): TokenData {
+    //     // const expiresIn = 60 * 60; // an hour
+    //     // const secret = process.env.JWT_SECRET;
+    //     // // const dataStoredInToken: DataStoredInToken = {
+          
+    //     // // };
+    //     // return {
+    //     //   expiresIn,
+    //     //   token: jwt.sign(dataStoredInToken, secret, { expiresIn }),
+    //     // };
+    //   }
 }
