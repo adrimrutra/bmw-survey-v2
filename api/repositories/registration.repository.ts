@@ -3,6 +3,7 @@ import * as bcrypt from 'bcrypt';
 import * as jwt from 'jsonwebtoken';
 import { Repository, Add } from '../core/interfaces/repository';
 import { User} from '../models/user';
+import { RegistrationDto} from '../dto.models/registration.dto';
 import UserAlreadyExistsException from '../exceptions/UserAlreadyExistsException';
 import TokenData from '../core/interfaces/token.data';
 import DataStoredInToken from '../core/interfaces/data.stored.in.token';
@@ -11,12 +12,12 @@ import {Response} from 'express';
 
 
 @injectable()
-export class UserRepository implements Repository<User>, Add<User> {
+export class RegistrationRepository implements Repository<RegistrationDto>, Add<RegistrationDto> {
     private user: any;
     constructor() {
         this.user = new User().getModelForClass(User);
     }
-    async Add(entity: User) {
+    async Add(entity: RegistrationDto) {
 
         if (await this.user.findOne({ email: entity.email })) {
             throw new UserAlreadyExistsException(entity.email.toString());
@@ -35,7 +36,6 @@ export class UserRepository implements Repository<User>, Add<User> {
               return user;
             }
         });
-
     }
 
     private createUser (newUser, callback) {
@@ -61,7 +61,7 @@ export class UserRepository implements Repository<User>, Add<User> {
     //     // const expiresIn = 60 * 60; // an hour
     //     // const secret = process.env.JWT_SECRET;
     //     // // const dataStoredInToken: DataStoredInToken = {
-          
+
     //     // // };
     //     // return {
     //     //   expiresIn,
