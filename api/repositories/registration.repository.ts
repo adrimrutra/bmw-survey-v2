@@ -19,9 +19,9 @@ export class RegistrationRepository implements Repository<RegistrationDto>, Add<
     }
     async Add(entity: RegistrationDto) {
 
-        if (await this.user.findOne({ email: entity.email })) {
-            throw new UserAlreadyExistsException(entity.email.toString());
-        }
+       // if (await this.user.findOne({ email: entity.email })) {
+       //     throw new UserAlreadyExistsException(entity.email.toString());
+       // }
 
         const _user = await this.user({
           name: entity.name,

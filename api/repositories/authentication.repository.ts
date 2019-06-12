@@ -15,27 +15,37 @@ import * as passportLocal from 'passport-local';
 
 
 
+
+
+
+
+
+
 @injectable()
 export class AuthenticationRepository implements Repository<AuthenticationDto>, Add<AuthenticationDto> {
     private user: any;
-    private LocalStrategy = passportLocal.Strategy;
+
 
     constructor() {
         this.user = new User().getModelForClass(User);
     }
     async Add(entity: AuthenticationDto) {
 
-      passport.use(new this.LocalStrategy({ usernameField: 'email' }, (email, password, done) => {
+      passport.use(new passportLocal.Strategy({
+        usernameField: 'email',
+        passwordField: 'password'
+      },
+      (email, password, done) => {
 
-        this.user.findOne({ email: entity.email.toLowerCase() }, (err, user: any) => {
+        this.user.findOne({ email: email }, (err, user: any) => {
           if (err) {
             return done(err);
           }
           if (!user) {
-            return done(undefined, false, { message: `Email ${entity.email} not found.` });
+            return done(undefined, false, { message: `Email ${email} not found.` });
           }
 
-          user.comparePassword(entity.password, (err: Error, isMatch: boolean) => {
+          user.comparePassword(password, (err: Error, isMatch: boolean) => {
             if (err) {
               return done(err);
             }
@@ -48,6 +58,10 @@ export class AuthenticationRepository implements Repository<AuthenticationDto>, 
         });
       }));
 
+      passport.authenticate('local'),
+        function(req, res) {
+          res.status(200).send('logged in!');
+        }();
     }
 
 }

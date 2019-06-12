@@ -7,6 +7,8 @@ import { Router } from './core/router';
 import errorMiddleware from './middleware/error.middleware';
 import { LoggerProvider } from './providers/logger.provider';
 import * as winston from 'winston';
+import * as passport from 'passport';
+require('./config/passport.local.strategy');
 
 
 
@@ -42,7 +44,7 @@ class App {
         this.app.use(bodyParser.json());
         //this.app.use(cookeParser());
 
-      //  this.app.use(passport.initialize());
+        this.app.use(passport.initialize());
       //  this.app.use(passport.session());
 
         this.app.use(expressValidator());

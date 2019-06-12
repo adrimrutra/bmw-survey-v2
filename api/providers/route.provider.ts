@@ -8,7 +8,7 @@ export class RouteProvider {
         return [
             { path: '/survey', controller: SurveyController },
             { path: '/registration', controller: RegistrationController },
-            { path: '/login', controller: AuthenticationController }
+            { path: '/authentication', controller: AuthenticationController }
         ];
     }
 }

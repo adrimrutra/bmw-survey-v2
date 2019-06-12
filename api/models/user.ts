@@ -1,5 +1,5 @@
 import { prop, Typegoose, ModelType, InstanceType, Ref, arrayProp, plugin, pre } from 'typegoose';
-//import * as bcrypt from 'bcrypt';
+import * as bcrypt from 'bcrypt';
 
 export class User extends Typegoose {
     @prop({ required: true })
@@ -12,13 +12,21 @@ export class User extends Typegoose {
     password: String;
 }
 
+export const comparePassword = (password, hash, callback) => {
+        bcrypt.compare(password, hash,  (err, isMatch) => {
+                if(err) {
+                    throw err;
+        }
+        callback(null, isMatch);
+    });
+};
 
-// export const createUser = (newUser, callback) => {
-//     bcrypt.genSalt(10, function(err, salt) {
-//       bcrypt.hash(newUser.password, salt, function(err, hash) {
-//           newUser.password = hash;
-//           newUser.save(callback);
-//       });
-//     });
-//   };
+export const createUser = (newUser, callback) => {
+    bcrypt.genSalt(10, function(err, salt) {
+      bcrypt.hash(newUser.password, salt, function(err, hash) {
+          newUser.password = hash;
+          newUser.save(callback);
+      });
+    });
+};
 

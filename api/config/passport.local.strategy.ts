@@ -21,10 +21,13 @@ passport.deserializeUser((id, done) => {
 /**
  * Sign in using Email and Password.
  */
-function initPassport () {
-  passport.use(new LocalStrategy({ usernameField: 'email' }, (email, password, done) => {
+  passport.use(new LocalStrategy({
+    usernameField: 'email',
+    passwordField: 'password'
+  },
+  (email, password, done) => {
 
-    _user.findOne({ email: email.toLowerCase() }, (err, user: any) => {
+    _user.findOne({ email: email }, (err, user: any) => {
       if (err) {
         return done(err);
       }
@@ -44,6 +47,6 @@ function initPassport () {
 
     });
   }));
-}
 
-module.exports = initPassport;
+
+
