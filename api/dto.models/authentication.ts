@@ -1,4 +1,4 @@
-export class AuthenticationDto {
+export class Authentication {
     email: String;
     password: String;
 }

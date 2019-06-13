@@ -3,7 +3,7 @@ import * as bcrypt from 'bcrypt';
 import * as jwt from 'jsonwebtoken';
 import { Repository, Add } from '../core/interfaces/repository';
 import { User} from '../models/user';
-import { RegistrationDto} from '../dto.models/registration.dto';
+import { Registration} from '../dto.models/registration';
 import UserAlreadyExistsException from '../exceptions/UserAlreadyExistsException';
 import TokenData from '../core/interfaces/token.data';
 import DataStoredInToken from '../core/interfaces/data.stored.in.token';
@@ -12,16 +12,16 @@ import {Response} from 'express';
 
 
 @injectable()
-export class RegistrationRepository implements Repository<RegistrationDto>, Add<RegistrationDto> {
+export class RegistrationRepository implements Repository<Registration>, Add<Registration> {
     private user: any;
     constructor() {
         this.user = new User().getModelForClass(User);
     }
-    async Add(entity: RegistrationDto) {
+    async Add(entity: Registration) {
 
-       // if (await this.user.findOne({ email: entity.email })) {
-       //     throw new UserAlreadyExistsException(entity.email.toString());
-       // }
+       if (await this.user.findOne({ email: entity.email })) {
+           throw new UserAlreadyExistsException(entity.email.toString());
+       }
 
         const _user = await this.user({
           name: entity.name,

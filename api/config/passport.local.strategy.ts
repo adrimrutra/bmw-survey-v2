@@ -3,6 +3,8 @@ import * as passportLocal from 'passport-local';
 import { User } from '../models/user';
 
 
+
+
 const LocalStrategy = passportLocal.Strategy;
 const _user = new User().getModelForClass(User);
 
@@ -49,4 +51,6 @@ passport.deserializeUser((id, done) => {
   }));
 
 
+
+module.exports = passport;
 

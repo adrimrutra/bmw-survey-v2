@@ -2,7 +2,7 @@ import { injectable } from 'inversify';
 import * as bcrypt from 'bcrypt';
 import * as jwt from 'jsonwebtoken';
 import { Repository, Add } from '../core/interfaces/repository';
-import { AuthenticationDto} from '../dto.models/authentication.dto';
+import { Authentication} from '../dto.models/authentication';
 import { User} from '../models/user';
 import UserAlreadyExistsException from '../exceptions/UserAlreadyExistsException';
 import TokenData from '../core/interfaces/token.data';
@@ -12,24 +12,15 @@ import {Response} from 'express';
 import * as passport from 'passport';
 import * as passportLocal from 'passport-local';
 
-
-
-
-
-
-
-
-
-
 @injectable()
-export class AuthenticationRepository implements Repository<AuthenticationDto>, Add<AuthenticationDto> {
+export class AuthenticationRepository implements Repository<Authentication>, Add<Authentication> {
     private user: any;
 
 
     constructor() {
         this.user = new User().getModelForClass(User);
     }
-    async Add(entity: AuthenticationDto) {
+    async Add(entity: Authentication) {
 
       passport.use(new passportLocal.Strategy({
         usernameField: 'email',
@@ -58,10 +49,7 @@ export class AuthenticationRepository implements Repository<AuthenticationDto>, 
         });
       }));
 
-      passport.authenticate('local'),
-        function(req, res) {
-          res.status(200).send('logged in!');
-        }();
+     
     }
 
 }

@@ -7,17 +7,10 @@ import { Router } from './core/router';
 import errorMiddleware from './middleware/error.middleware';
 import { LoggerProvider } from './providers/logger.provider';
 import * as winston from 'winston';
+
 import * as passport from 'passport';
-require('./config/passport.local.strategy');
-
-
-
-//import cookeParser from 'cookie-parser';
-//import session from 'express-session';
-//import passport from 'passport';
-//const LocalStrategy = require('passport-local').Strategy;
-
-
+import * as passportLocal from 'passport-local';
+import { User } from './models/user';
 
 
 
@@ -42,10 +35,59 @@ class App {
           next();
         });
         this.app.use(bodyParser.json());
-        //this.app.use(cookeParser());
+
+
+/////////////////////////////////////////////////////////////////////////////////////////////
+const LocalStrategy = passportLocal.Strategy;
+const _user = new User().getModelForClass(User);
+
+
+passport.serializeUser<any, any>((user, done) => {
+  done(undefined, user.id);
+});
+
+passport.deserializeUser((id, done) => {
+  _user.findById(id, (err, user) => {
+    done(err, user);
+  });
+});
+
+
+/**
+ * Sign in using Email and Password.
+ */
+  passport.use(new LocalStrategy({
+    usernameField: 'email',
+    passwordField: 'password'
+  },
+  (email, password, done) => {
+
+    _user.findOne({ email: email }, (err, user: any) => {
+      if (err) {
+        return done(err);
+      }
+      if (!user) {
+        return done(undefined, false, { message: `Email ${email} not found.` });
+      }
+
+      user.comparePassword(password, (err: Error, isMatch: boolean) => {
+        if (err) {
+          return done(err);
+        }
+        if (isMatch) {
+          return done(undefined, user);
+        }
+        return done(undefined, false, { message: 'Invalid email or password.' });
+      });
+
+    });
+  }));
+///////////////////////////////////////////////////////////////////////////////////////////////
 
         this.app.use(passport.initialize());
-      //  this.app.use(passport.session());
+
+
+
 
         this.app.use(expressValidator());
 
