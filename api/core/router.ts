@@ -17,12 +17,12 @@ import { nextContext } from '@angular/core/src/render3';
 
 
 export class Router {
-    private routes: Route[];
+    private routes: Route[];s
     private container: Container;
     private controllers = new Array();
     private db = new DbConnection();
 
-    constructor() {
+    constructor(passport: any) {
         this.routes = RouteProvider.getRoutes();
 
         this.container = new Container();
