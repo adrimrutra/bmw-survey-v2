@@ -3,22 +3,18 @@ import { Container, interfaces } from 'inversify';
 import { RouteProvider } from '../providers/route.provider';
 import { Controller, Get, GetById, Post, Put, Delete} from './interfaces/controller';
 
-import { GetAll, Add } from '../core/interfaces/repository';
-
 import { Request, Response, NextFunction} from 'express';
 import * as express from 'express';
 import { RepositoryProvider } from '../providers/repository.provider';
 import { DbConnection } from './db.connection';
 import HttpException from '../exceptions/HttpException';
 import NotImplementedException from '../exceptions/NotImplementedException';
-
-import { nextContext } from '@angular/core/src/render3';
 import {AuthenticationController} from '../controllers/authentication.controller';
 
 
 
 export class Router {
-    private routes: Route[];s
+    private routes: Route[];
     private container: Container;
     private controllers = new Array();
     private db = new DbConnection();
@@ -57,7 +53,7 @@ export class Router {
                 const controller = this.container.resolve<Controller>(element.controller);
                 this.controllers.push(controller);
 
-                if (controller as Get) {
+                if (this.container.get(element.controller) as Get) {
                     expressRouter.get(element.path, this.requestHandle(
                         (c: Get, req: Request, next: NextFunction) =>
                             c.get(req, next), controller));
@@ -65,7 +61,7 @@ export class Router {
                     throw new NotImplementedException();
                 }
 
-                if (controller as GetById) {
+                if (this.container.get(element.controller) as GetById) {
                     expressRouter.get(element.path + '/:id', this.requestHandle(
                         (c: GetById, req: Request, id: number, next: NextFunction) =>
                             c.getById(id, req, next), controller));
@@ -73,7 +69,7 @@ export class Router {
                     throw new NotImplementedException();
                 }
 
-                if (controller as Post) {
+                if (this.container.get(element.controller) as Post) {
                     expressRouter.post(element.path, this.requestHandle(
                         (c: Post, req: Request, next: NextFunction) =>
                             c.post(req, next), controller));
@@ -81,17 +77,15 @@ export class Router {
                     throw new NotImplementedException();
                 }
 
-                if (controller as Put) {
+                if (this.container.get(element.controller) as Put) {
                     expressRouter.put(element.path + '/:id', this.requestHandle(
                         (c: Put, req: Request, id: number, next: NextFunction) =>
-                            c.put(id, req, next), controller)
-
-                            );
+                            c.put(id, req, next), controller));
                 } else {
                     throw new NotImplementedException();
                 }
 
-                if (controller as Delete) {
+                if (this.container.get(element.controller) as Delete) {
                     expressRouter.delete(element.path + '/:id', this.requestHandle(
                         (c: Delete, req: Request, id: number, next: NextFunction) =>
                             c.delete(id, req, next), controller));
@@ -125,17 +119,9 @@ export class Router {
                 const id = req.params.id;
 
                 if (id) {
-                    if (controller as GetById || controller as Put || controller as Delete){
-                        response = await controllerHandler(controller, req, id, next);
-                    } else {
-                        throw new NotImplementedException();
-                    }
+                    response = await controllerHandler(controller, req, id, next);
                 } else {
-                    if (controller as Get || controller as Post) {
-                        response = await controllerHandler(controller, req, next);
-                    } else {
-                        throw new NotImplementedException();
-                    }
+                    response = await controllerHandler(controller, req, next);
                 }
 
                 if (response) {
