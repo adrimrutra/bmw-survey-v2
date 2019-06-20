@@ -1,19 +1,20 @@
 import { Request, Response, NextFunction } from 'express';
-import { injectable } from 'inversify';
+import { injectable, inject } from 'inversify';
 import { Controller, Post} from '../core/interfaces/controller';
 import { Authentication } from '../dto.models/authentication';
 import 'reflect-metadata';
 import NotImplementedException from '../exceptions/NotImplementedException';
-import * as passport from 'passport';
 
 @injectable()
  export class AuthenticationController implements Controller, Post {
-
-    constructor() { }
+    private _passport: any;
+    constructor(@inject('any') passport: any) {
+        this._passport = passport;
+    }
 
     async post(req: Request, next: NextFunction): Promise<any> {
 
-        passport.authenticate('local-login', {session: true}, (err: any, user: any, info: any) => {
+        this._passport.authenticate('local-login', {session: true}, (err: any, user: any, info: any) => {
             if (err) {
                 return next(err); // will generate a 500 error
             }

@@ -13,6 +13,7 @@ import HttpException from '../exceptions/HttpException';
 import NotImplementedException from '../exceptions/NotImplementedException';
 
 import { nextContext } from '@angular/core/src/render3';
+import {AuthenticationController} from '../controllers/authentication.controller';
 
 
 
@@ -21,10 +22,11 @@ export class Router {
     private container: Container;
     private controllers = new Array();
     private db = new DbConnection();
+    private passport: any;
 
     constructor(passport: any) {
         this.routes = RouteProvider.getRoutes();
-
+        this.passport = passport;
         this.container = new Container();
         this.binding();
     }
@@ -39,6 +41,8 @@ export class Router {
 
             this.container.bind<Controller>(element.controller).to(element.controller);
         });
+
+        this.container.bind<Controller>(AuthenticationController).toConstructor<any>(this.passport);
 
         RepositoryProvider.bindRepositories(this.container);
     }

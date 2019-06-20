@@ -53,9 +53,9 @@ export class RegistrationRepository implements Repository<Registration>, Add<Reg
 
 
 
-    public createCookie(tokenData: TokenData) {
-        return `Authorization=${tokenData.token}; HttpOnly; Max-Age=${tokenData.expiresIn}`;
-    }
+    // public createCookie(tokenData: TokenData) {
+    //     return `Authorization=${tokenData.token}; HttpOnly; Max-Age=${tokenData.expiresIn}`;
+    // }
 
     // private createToken(user: User): TokenData {
     //     // const expiresIn = 60 * 60; // an hour
