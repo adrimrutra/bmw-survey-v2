@@ -4,7 +4,6 @@ import { Survey } from '../models/survey';
 import { User } from '../models/user';
 import { SurveyRepository } from '../repositories/survey.repository';
 import { RegistrationRepository } from '../repositories/registration.repository';
-import { AuthenticationRepository } from '../repositories/authentication.repository';
 import { Registration} from '../dto.models/registration';
 import { Authentication} from '../dto.models/authentication';
 
@@ -19,6 +18,5 @@ export class RepositoryProvider {
     public static bindRepositories(container: Container) {
         container.bind<Repository<Survey>>(TYPES.Survey).to(SurveyRepository);
         container.bind<Repository<Registration>>(TYPES.Registration).to(RegistrationRepository);
-        container.bind<Repository<Authentication>>(TYPES.Authentication).to(AuthenticationRepository);
     }
 }

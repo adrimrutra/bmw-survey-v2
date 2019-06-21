@@ -1,6 +1,7 @@
 import * as mongoose from 'mongoose';
+import { injectable } from 'inversify';
 
-
+@injectable()
 export class DbConnection {
     private db_url = 'mongodb://localhost:27017/bmwsurvey';
     instance: typeof mongoose;
@@ -28,6 +29,7 @@ export class DbConnection {
             //   (err) => { console.log('Can not connect to the database' + err); }
             // );
 
+          // this.instance = await mongoose.connect(this.db_url, { useNewUrlParser: true , useCreateIndex: true});
            this.instance = await mongoose.connect(this.db_url, { useNewUrlParser: true , useCreateIndex: true});
            this.isConnected = true;
 

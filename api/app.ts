@@ -16,7 +16,8 @@ const port = process.env.PORT || '4000';
 
 class App {
     public app: express.Application;
-    public router = new Router(passport);
+   // public router = new Router(passport);
+    public router = new Router();
 
     constructor() {
         this.app = express();
@@ -55,7 +56,7 @@ class App {
 
        // this.app.use(LoggerProvider.loggerMiddleware);
 
-        this.app.use('/api', this.router.route());
+        this.app.use('/api', this.router.route(passport));
 
         this.initializeErrorHandling();
 

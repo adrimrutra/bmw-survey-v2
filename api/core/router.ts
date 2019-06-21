@@ -1,5 +1,5 @@
 import { Route } from './models/route';
-import { Container, interfaces } from 'inversify';
+import { Container, interfaces,injectable, inject } from 'inversify';
 import { RouteProvider } from '../providers/route.provider';
 import { Controller, Get, GetById, Post, Put, Delete} from './interfaces/controller';
 
@@ -10,19 +10,18 @@ import { DbConnection } from './db.connection';
 import HttpException from '../exceptions/HttpException';
 import NotImplementedException from '../exceptions/NotImplementedException';
 import {AuthenticationController} from '../controllers/authentication.controller';
+import { DbProvider } from '../providers/db.provider';
 
 
-
+@injectable()
 export class Router {
     private routes: Route[];
     private container: Container;
     private controllers = new Array();
-    private db = new DbConnection();
-    private passport: any;
+    private db: DbConnection;
 
-    constructor(passport: any) {
+    constructor() {
         this.routes = RouteProvider.getRoutes();
-        this.passport = passport;
         this.container = new Container();
         this.binding();
     }
@@ -37,14 +36,29 @@ export class Router {
 
             this.container.bind<Controller>(element.controller).to(element.controller);
         });
+        DbProvider.bindDataBase(this.container);
 
-        this.container.bind<Controller>(AuthenticationController).toConstructor<any>(this.passport);
+        this.db = this.container.resolve<DbConnection>(DbConnection);
+
+
+       // this.container.bind<Controller>(AuthenticationController).toConstructor<any>(this.passport);
+       //this.container.bind<Controller>(AuthenticationController).toDynamicValue(() => this.passport )
 
         RepositoryProvider.bindRepositories(this.container);
     }
 
-    public route(): any {
+    public route(passport: any): any {
         const expressRouter = express.Router();
+       // this.container.bind<Controller>(AuthenticationController).toDynamicValue(() => passport);
+        let aaa: Number;
+        aaa = 10;
+
+      //  this.container.bind<Controller>(AuthenticationController).toDynamicValue(() => aaa);
+      //  this.container.bind<Controller>(AuthenticationController).toConstantValue(() => aaa);
+      //  this.container.bind<Controller>(AuthenticationController).to(aaa);
+     // this.container.bind<Controller>(AuthenticationController).toDynamicValue((context: interfaces.Context) =>  aaa );
+     // this.container.bind<Controller>(AuthenticationController).toFunction((context: interfaces.Context) =>  aaa );
+
         (async () => {
             await  this.db.connect();
 
@@ -58,7 +72,7 @@ export class Router {
                         (c: Get, req: Request, next: NextFunction) =>
                             c.get(req, next), controller));
                 } else {
-                    throw new NotImplementedException();
+                   throw new NotImplementedException();
                 }
 
                 if (this.container.get(element.controller) as GetById) {
