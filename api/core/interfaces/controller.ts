@@ -1,19 +1,9 @@
-import { Request, NextFunction } from 'express';
+import { Request, Response, NextFunction } from 'express';
 
-export class Controller {}
-
-export interface Get {
-    get(req: Request, next: NextFunction): Promise<any>;
-}
-export interface GetById {
-    getById(id: any, req: Request, next: NextFunction): Promise<any>;
-}
-export interface Post {
-    post(req: Request, next: NextFunction): Promise<any>;
-}
-export interface Put {
-    put(id: any, req: Request, next: NextFunction): Promise<any>;
-}
-export interface Delete {
-    delete(id: any, req: Request, next: NextFunction): Promise<any>;
+export interface Controller {
+    get(req: Request, res: Response, next: NextFunction);
+    getById(id: any, req: Request, res: Response, next: NextFunction);
+    post(req: Request, res: Response, next: NextFunction);
+    put(id: any, req: Request, res: Response, next: NextFunction);
+    delete(id: any, req: Request, res: Response, next: NextFunction);
 }

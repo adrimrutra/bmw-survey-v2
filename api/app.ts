@@ -16,7 +16,6 @@ const port = process.env.PORT || '4000';
 
 class App {
     public app: express.Application;
-   // public router = new Router(passport);
     public router = new Router();
 
     constructor() {

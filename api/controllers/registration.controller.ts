@@ -1,34 +1,42 @@
 import { Request, Response, NextFunction } from 'express';
 import { injectable, inject } from 'inversify';
-import { Controller, Post} from '../core/interfaces/controller';
-import { Repository, Add } from '../core/interfaces/repository';
-import { TYPES } from '../providers/repository.provider';
-import { Registration } from '../dto.models/registration';
+import { Controller } from '../core/interfaces/controller';
+import { TYPES } from '../commons/typse';
 import 'reflect-metadata';
-import BadRequestException from '../exceptions/BadRequestException';
+import UserAlreadyExistsException from '../exceptions/UserAlreadyExistsException';
+import InternalServerErrorException from '../exceptions/InternalServerErrorException';
 import NotImplementedException from '../exceptions/NotImplementedException';
 
 @injectable()
- export class RegistrationController implements Controller, Post {
-
-    constructor(@inject(TYPES.Registration) private repository: Repository<Registration>) {
+ export class RegistrationController implements Controller {
+    private passport: any;
+    constructor( @inject(TYPES.Passport) passport: any) {
+        this.passport = passport;
     }
 
-    async post(req: Request, next: NextFunction): Promise<any> {
-        if (this.repository as Add<Registration>) {
-            // req.checkBody('name', 'Name is required').notEmpty();
-            // req.checkBody('email', 'Email is required').notEmpty();
-            // req.checkBody('email', 'Please enter a valid email').isEmail();
-            // req.checkBody('password', 'Password is required').notEmpty();
-            // let errors = req.validationErrors();
+    post(req: Request, res: Response, next: NextFunction) {
+        this.passport.authenticate('local-signup', (err: any, user: any, info: any) => {
+            if (err) {
+                return next(new InternalServerErrorException(err)); // will generate a 500 error
+            }
+            // Generate a JSON response reflecting signup
+            if (!user) {
+                return next(new UserAlreadyExistsException(user.email));
+            }
+            return res;
+        })(req, res);
+    }
 
-            await (this.repository as Add<Registration>).Add(req.body).then((res) => {
-                return res;
-            }).catch((err: any) => {
-                next(err);
-            });
-        } else {
-            next(new NotImplementedException());
-        }
+    get(req: Request, res: Response, next: NextFunction) {
+        next(new NotImplementedException());
+    }
+    getById(id: any, req: Request, res: Response, next: NextFunction) {
+        next(new NotImplementedException());
+    }
+    put(id: any, req: Request, res: Response, next: NextFunction) {
+        next(new NotImplementedException());
+    }
+    delete(id: any, req: Request, res: Response, next: NextFunction) {
+        next(new NotImplementedException());
     }
 }

@@ -3,6 +3,6 @@ import { DbConnection } from '../core/db.connection';
 
 export class DbProvider {
     public static bindDataBase(container: Container) {
-        container.bind<DbConnection>('DbConnection').to(DbConnection);
+        container.bind<DbConnection>(DbConnection).to(DbConnection);
     }
 }

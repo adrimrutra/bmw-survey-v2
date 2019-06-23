@@ -2,7 +2,7 @@ import { injectable } from 'inversify';
 import * as bcrypt from 'bcrypt';
 import * as jwt from 'jsonwebtoken';
 import { Repository, Add } from '../core/interfaces/repository';
-import { User} from '../models/user';
+import { UserModel} from '../models/user';
 import { Registration} from '../dto.models/registration';
 import UserAlreadyExistsException from '../exceptions/UserAlreadyExistsException';
 import TokenData from '../core/interfaces/token.data';
@@ -15,7 +15,7 @@ import {Response} from 'express';
 export class RegistrationRepository implements Repository<Registration>, Add<Registration> {
     private user: any;
     constructor() {
-        this.user = new User().getModelForClass(User);
+        this.user = new UserModel();
     }
     async Add(entity: Registration) {
 

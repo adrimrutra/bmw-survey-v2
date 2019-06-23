@@ -6,9 +6,9 @@ import { AuthenticationController } from '../controllers/authentication.controll
 export class RouteProvider {
     public static getRoutes(): Route[] {
         return [
-            { path: '/survey', controller: SurveyController },
-            { path: '/registration', controller: RegistrationController },
-            { path: '/authentication', controller: AuthenticationController }
+         //   { path: '/survey', controller: SurveyController },
+            { path: '/registration', controller: RegistrationController }//,
+          //  { path: '/authentication', controller: AuthenticationController }
         ];
     }
 }

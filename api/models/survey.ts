@@ -1,8 +1,7 @@
 import { prop, Typegoose, ModelType, InstanceType, Ref, arrayProp, plugin, pre } from 'typegoose';
 
 
-export class Survey extends Typegoose {
-
+class Survey extends Typegoose {
     @prop({ required: true, min: 0, max: 100 })
     age: Number;
 
@@ -12,7 +11,7 @@ export class Survey extends Typegoose {
     @prop({ required: false })
     license: String;
 
-    @prop({ required: true })
+    @prop({ required: false })
 
     first_car: String;
 
@@ -29,4 +28,6 @@ export class Survey extends Typegoose {
     @arrayProp({ items: String })
     carmodels: String [];
 }
+
+export const SurveyModel = new Survey().getModelForClass(Survey);
 
