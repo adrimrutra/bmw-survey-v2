@@ -1,5 +1,6 @@
 import { Route } from './models/route';
-import { Container, interfaces, injectable, inject } from 'inversify';
+import { inject, injectable, Container, interfaces } from 'inversify';
+import 'reflect-metadata';
 import { RouteProvider } from '../providers/route.provider';
 import { Controller } from './interfaces/controller';
 import { TYPES } from '../commons/typse';
@@ -12,8 +13,9 @@ import { DbProvider } from '../providers/db.provider';
 import { SurveyModel } from '../models/survey';
 
 import {RegistrationController} from '../controllers/registration.controller';
+import { analyzeAndValidateNgModules } from '@angular/compiler';
 
-
+@injectable()
 export class Router {
     private routes: Route[];
     private container: Container;
@@ -33,34 +35,46 @@ export class Router {
     private binding() {
 
         this.routes.forEach(element => {
-            this.container.bind<Controller>(element.controller).to(element.controller);
+           // this.container.bind<Controller>(element.controller).to(element.controller);
         });
 
         DbProvider.bindDataBase(this.container);
 
         this.db = this.container.resolve<DbConnection>(DbConnection);
 
+        this.container.bind<RegistrationController>(RegistrationController).to(RegistrationController);
+
         RepositoryProvider.bindRepositories(this.container);
     }
 
     public route(passport: any): any {
         const expressRouter = express.Router();
-        this.container.bind<any>(TYPES.Passport).toConstantValue(passport);
-        let RController = new RegistrationController(passport);
+        let aaa: string;
+        aaa = 'Hello';
+
+       // this.container.bind<any>(TYPES.Passport).toConstantValue(passport);
+        this.container.bind<string>('aaa').toConstantValue(aaa);
 
         (async () => {
             await  this.db.connect();
-
-            this.routes.forEach(element => {
-
-                const controller = this.container.resolve<Controller>(element.controller);
+                const controller = this.container.resolve<RegistrationController>(RegistrationController);
                 this.controllers.push(controller);
-                expressRouter.get(element.path, RController.get);
-                expressRouter.get(element.path + '/:id', RController.getById);
-                expressRouter.post(element.path, RController.post);
-                expressRouter.put(element.path + '/:id', RController.put);
-                expressRouter.delete(element.path + '/:id', RController.delete);
-            });
+                expressRouter.get('/registration', controller.get);
+                expressRouter.get('/registration' + '/:id', controller.getById);
+                expressRouter.post('/registration', controller.post);
+                expressRouter.put('/registration' + '/:id', controller.put);
+                expressRouter.delete('/registration' + '/:id', controller.delete);
+
+            // this.routes.forEach(element => {
+
+            //     const controller = this.container.resolve<Controller>(element.controller);
+            //     this.controllers.push(controller);
+            //     expressRouter.get(element.path, controller.get);
+            //     expressRouter.get(element.path + '/:id', controller.getById);
+            //     expressRouter.post(element.path, controller.post);
+            //     expressRouter.put(element.path + '/:id', controller.put);
+            //     expressRouter.delete(element.path + '/:id', controller.delete);
+            // });
         })();
 
         return expressRouter;

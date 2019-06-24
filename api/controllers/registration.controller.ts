@@ -1,8 +1,8 @@
 import { Request, Response, NextFunction } from 'express';
-import { injectable, inject } from 'inversify';
+import { inject, injectable, Container, interfaces } from 'inversify';
+import 'reflect-metadata';
 import { Controller } from '../core/interfaces/controller';
 import { TYPES } from '../commons/typse';
-import 'reflect-metadata';
 import UserAlreadyExistsException from '../exceptions/UserAlreadyExistsException';
 import InternalServerErrorException from '../exceptions/InternalServerErrorException';
 import NotImplementedException from '../exceptions/NotImplementedException';
@@ -10,11 +10,19 @@ import NotImplementedException from '../exceptions/NotImplementedException';
 @injectable()
  export class RegistrationController implements Controller {
     private passport: any;
-    constructor( @inject(TYPES.Passport) passport: any) {
-        this.passport = passport;
+    private aaa: any;
+    
+    // constructor(@inject(TYPES.Passport) passport: any) {
+    //     this.passport = passport;
+    // }
+
+    constructor(@inject('aaa') aaa: string) {
+        this.aaa = aaa;
     }
 
     post(req: Request, res: Response, next: NextFunction) {
+        
+        console.log(this.aaa);
         this.passport.authenticate('local-signup', (err: any, user: any, info: any) => {
             if (err) {
                 return next(new InternalServerErrorException(err)); // will generate a 500 error
