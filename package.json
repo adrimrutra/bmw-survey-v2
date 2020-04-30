@@ -59,7 +59,7 @@
     "font-awesome": "^4.7.0",
     "guid-typescript": "^1.0.9",
     "inversify": "^5.0.1",
-    "jquery": "^3.4.1",
+    "jquery": "^3.5.0",
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^5.4.15",
     "ng2-charts": "^2.2.2",
